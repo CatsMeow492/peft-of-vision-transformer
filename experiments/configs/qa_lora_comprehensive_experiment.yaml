@@ -1,0 +1,66 @@
+# Comprehensive QA-LoRA experiment configuration
+name: "qa_lora_comprehensive_evaluation"
+description: "Comprehensive QA-LoRA evaluation with quantization-aware training"
+tags: ["qa_lora", "quantization", "adaptive", "comprehensive"]
+
+model:
+  name: "deit_tiny_patch16_224"
+  source: "timm"
+  pretrained: true
+  image_size: 224
+
+dataset:
+  name: "cifar10"
+  batch_size: 32
+  num_workers: 4
+  image_size: 224
+
+lora:
+  rank: 8
+  alpha: 16.0
+  dropout: 0.1
+
+qa_lora:
+  quantization_bits: 4
+  quantization_type: "nf4"  # Options: nf4, fp4, int4, int8
+  double_quantization: true
+  compute_dtype: "float16"
+  gradient_scaling_factor: 1.0
+  quantization_schedule: "constant"  # Options: constant, linear, cosine
+  warmup_steps: 100
+  use_group_quantization: true
+  quantization_group_size: 64
+  quantization_weight: 1.0
+  adaptation_weight: 1.0
+  balance_schedule: "constant"
+  gradient_clipping: 1.0
+  use_stable_embedding: true
+  freeze_quantization_after: null
+
+training:
+  learning_rate: 1e-4
+  num_epochs: 10
+  optimizer: "adamw"
+  weight_decay: 0.01
+  use_mixed_precision: true
+  gradient_accumulation_steps: 1
+  save_steps: 500
+  eval_steps: 100
+  logging_steps: 50
+
+seed: 42
+output_dir: "experiments/outputs/qa_lora_comprehensive"
+
+use_adalora: false
+use_qa_lora: true
+
+max_memory_gb: 16.0
+
+# Experiment matrix variations
+variations:
+  quantization_bits: [4, 8]
+  quantization_types: ["nf4", "fp4", "int4", "int8"]
+  quantization_schedules: ["constant", "linear", "cosine"]
+  gradient_scaling_factors: [0.5, 1.0, 1.5, 2.0]
+  group_quantization: [true, false]
+  datasets: ["cifar10", "cifar100"]

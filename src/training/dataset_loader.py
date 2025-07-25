@@ -7,24 +7,20 @@ import os
 from pathlib import Path
 from typing import Dict, Tuple, Optional, Callable, Any, Union, TYPE_CHECKING
 
-if TYPE_CHECKING:
+try:
     import torch
     from torch.utils.data import Dataset, DataLoader
-    from torchvision import transforms
+    from torchvision import transforms, datasets
     from PIL import Image
-else:
-    try:
-        import torch
-        from torch.utils.data import Dataset, DataLoader
-        from torchvision import transforms, datasets
-        from PIL import Image
-    except ImportError:
-        torch = None
-        Dataset = None
-        DataLoader = None
-        transforms = None
-        datasets = None
-        Image = None
+    TORCH_AVAILABLE = True
+except ImportError:
+    torch = None
+    Dataset = object  # Fallback base class
+    DataLoader = None
+    transforms = None
+    datasets = None
+    Image = None
+    TORCH_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 

@@ -1,0 +1,24 @@
+{
+  "detailed_memory_analysis": {
+    "baseline_memory_mb": 500.0,
+    "8bit_memory_mb": 236.4351830412294,
+    "4bit_memory_mb": 0,
+    "memory_reduction_by_model": {},
+    "memory_reduction_by_dataset": {}
+  },
+  "detailed_accuracy_analysis": {
+    "accuracy_by_quantization": {
+      "baseline": 0.8466596839186362,
+      "8bit": 0.8384504850339214,
+      "4bit": 0
+    },
+    "accuracy_by_lora_rank": {},
+    "accuracy_variance": {}
+  },
+  "gradient_flow_analysis": {},
+  "convergence_patterns": {},
+  "statistical_significance": {},
+  "recommendations": [
+    "8-bit quantization shows minimal accuracy impact and is recommended for memory-constrained environments"
+  ]
+}

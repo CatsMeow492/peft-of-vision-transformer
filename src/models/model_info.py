@@ -3,7 +3,7 @@ Data models for model information and configuration.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, TYPE_CHECKING
+from typing import Dict, List, Optional, TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     import torch.nn as nn
@@ -55,6 +55,15 @@ class QuantizationConfig:
             raise ValueError("Unsupported compute dtype")
         if self.quant_type not in ["fp4", "nf4"]:
             raise ValueError("Quantization type must be 'fp4' or 'nf4'")
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert configuration to dictionary."""
+        return {
+            "bits": self.bits,
+            "compute_dtype": self.compute_dtype,
+            "quant_type": self.quant_type,
+            "double_quant": self.double_quant
+        }
 
 
 def count_parameters(model) -> tuple[int, int]:

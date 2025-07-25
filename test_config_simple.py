@@ -1,73 +1,77 @@
 #!/usr/bin/env python3
 """
-Simple test for configuration system without external dependencies.
+Simple test script for export configuration without torch dependencies.
 """
 
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '.'))
 
-# Test basic imports and functionality
-try:
-    # Import directly from the standalone module
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "standalone_config", 
-        "src/experiments/standalone_config.py"
-    )
-    standalone_config = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(standalone_config)
+# Add src to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
+def test_export_config_import():
+    """Test that we can import the export configuration."""
+    print("Testing export configuration import...")
     
-    ExperimentConfig = standalone_config.ExperimentConfig
-    ModelConfig = standalone_config.ModelConfig
-    DatasetConfig = standalone_config.DatasetConfig
-    ExperimentMatrix = standalone_config.ExperimentMatrix
-    ConfigValidator = standalone_config.ConfigValidator
+    try:
+        from models.model_export import ExportConfig, MergeValidationResult
+        print("✓ Import successful")
+        
+        # Test default config
+        config = ExportConfig()
+        assert config.export_format == "pytorch"
+        assert config.precision == "float32"
+        assert config.merge_adapters is True
+        print("✓ Default config creation successful")
+        
+        # Test custom config
+        config = ExportConfig(
+            export_format="onnx",
+            precision="float16",
+            optimize_for_inference=False
+        )
+        assert config.export_format == "onnx"
+        assert config.precision == "float16"
+        assert config.optimize_for_inference is False
+        print("✓ Custom config creation successful")
+        
+        # Test validation
+        try:
+            ExportConfig(export_format="invalid")
+            assert False, "Should have raised ValueError"
+        except ValueError as e:
+            print(f"✓ Validation works: {e}")
+        
+        # Test MergeValidationResult
+        result = MergeValidationResult(
+            validation_passed=True,
+            numerical_precision_check=True,
+            forward_pass_check=True,
+            parameter_count_check=True,
+            size_comparison={},
+            max_weight_difference=0.0,
+            mean_weight_difference=0.0
+        )
+        assert result.validation_passed is True
+        assert result.errors == []
+        print("✓ MergeValidationResult creation successful")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Import or basic functionality failed: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+
+if __name__ == "__main__":
+    print("Running basic configuration tests...")
     
-    print("✓ Successfully imported experiment config classes")
+    success = test_export_config_import()
     
-    # Test model config
-    model_config = ModelConfig(name="deit_tiny_patch16_224")
-    print(f"✓ Model config created: {model_config.name}")
-    
-    # Test dataset config
-    dataset_config = DatasetConfig(name="cifar10")
-    print(f"✓ Dataset config created: {dataset_config.name}, classes={dataset_config.num_classes}")
-    
-    # Test experiment config
-    exp_config = ExperimentConfig(
-        name="test_experiment",
-        model=model_config,
-        dataset=dataset_config
-    )
-    print(f"✓ Experiment config created: {exp_config.name}")
-    print(f"  - Model: {exp_config.model.name}")
-    print(f"  - Dataset: {exp_config.dataset.name}")
-    print(f"  - Experiment ID: {exp_config.get_experiment_id()}")
-    
-    # Test experiment matrix
-    matrix = ExperimentMatrix(exp_config)
-    matrix.add_seed_variation([42, 123])
-    print(f"✓ Experiment matrix created with {matrix.count_experiments()} experiments")
-    
-    # Test config validation
-    is_valid, errors = ConfigValidator.validate_config(exp_config)
-    print(f"✓ Config validation: valid={is_valid}, errors={len(errors)}")
-    
-    # Test serialization
-    config_dict = exp_config.to_dict()
-    restored_config = ExperimentConfig.from_dict(config_dict)
-    print(f"✓ Config serialization: {restored_config.name}")
-    
-    print("\n✓ All experiment configuration tests passed!")
-    
-except ImportError as e:
-    print(f"✗ Import error: {e}")
-    import traceback
-    traceback.print_exc()
-    sys.exit(1)
-except Exception as e:
-    print(f"✗ Error: {e}")
-    import traceback
-    traceback.print_exc()
-    sys.exit(1)
+    if success:
+        print("\n✅ Basic configuration tests passed!")
+    else:
+        print("\n❌ Basic configuration tests failed!")
+        sys.exit(1)

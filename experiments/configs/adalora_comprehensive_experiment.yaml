@@ -1,0 +1,59 @@
+# Comprehensive AdaLoRA experiment configuration
+name: "adalora_comprehensive_evaluation"
+description: "Comprehensive AdaLoRA evaluation with multiple allocation strategies and importance metrics"
+tags: ["adalora", "adaptive", "comprehensive", "layer_importance"]
+
+model:
+  name: "deit_tiny_patch16_224"
+  source: "timm"
+  pretrained: true
+  image_size: 224
+
+dataset:
+  name: "cifar10"
+  batch_size: 32
+  num_workers: 4
+  image_size: 224
+
+lora:
+  rank: 16  # Initial rank for AdaLoRA
+  alpha: 32.0
+  dropout: 0.1
+
+adalora:
+  total_rank_budget: 64
+  min_rank: 2
+  max_rank: 16
+  importance_metric: "magnitude"  # Options: magnitude, gradient_norm, fisher
+  update_frequency: 100
+  allocation_strategy: "proportional"  # Options: proportional, threshold, top_k
+  warmup_steps: 200
+  sensitivity_threshold: 0.01
+  reallocation_ratio: 0.1
+  track_importance_history: true
+  save_importance_plots: true
+
+training:
+  learning_rate: 1e-4
+  num_epochs: 10
+  optimizer: "adamw"
+  weight_decay: 0.01
+  gradient_accumulation_steps: 1
+  save_steps: 500
+  eval_steps: 100
+  logging_steps: 50
+
+seed: 42
+output_dir: "experiments/outputs/adalora_comprehensive"
+
+use_adalora: true
+use_qa_lora: false
+
+max_memory_gb: 16.0
+
+# Experiment matrix variations
+variations:
+  importance_metrics: ["magnitude", "gradient_norm", "fisher"]
+  allocation_strategies: ["proportional", "threshold", "top_k"]
+  budget_sizes: [32, 64, 96]
+  datasets: ["cifar10", "cifar100"]

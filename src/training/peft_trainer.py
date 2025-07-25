@@ -491,7 +491,7 @@ class PEFTTrainer:
             **additional_metrics
         }
     
-    def _compute_loss(self, batch: Dict[str, torch.Tensor]) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
+    def _compute_loss(self, batch: Dict[str, "torch.Tensor"]) -> Tuple["torch.Tensor", Optional["torch.Tensor"]]:
         """
         Compute loss for a batch.
         
@@ -522,7 +522,7 @@ class PEFTTrainer:
         
         return loss, logits
     
-    def _move_batch_to_device(self, batch: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
+    def _move_batch_to_device(self, batch: Dict[str, "torch.Tensor"]) -> Dict[str, "torch.Tensor"]:
         """Move batch tensors to the appropriate device."""
         return {key: value.to(self.device) for key, value in batch.items()}
     

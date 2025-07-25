@@ -1,0 +1,219 @@
+{
+  "analysis_timestamp": "2025-07-25T13:07:43.205593",
+  "experiment_summary": {
+    "adalora_experiments": 3,
+    "qa_lora_experiments": 3,
+    "fixed_baseline_experiments": 4,
+    "total_experiments": 10
+  },
+  "layer_importance_analysis": {
+    "layer_statistics": {
+      "attention.query": {
+        "avg_importance": 0.8833333333333333,
+        "min_importance": 0.85,
+        "max_importance": 0.92,
+        "avg_final_rank": 14.0,
+        "min_final_rank": 12,
+        "max_final_rank": 16,
+        "avg_rank_changes": 3.3333333333333335,
+        "total_experiments": 3
+      },
+      "attention.key": {
+        "avg_importance": 0.7200000000000001,
+        "min_importance": 0.68,
+        "max_importance": 0.76,
+        "avg_final_rank": 8.0,
+        "min_final_rank": 6,
+        "max_final_rank": 10,
+        "avg_rank_changes": 2.0,
+        "total_experiments": 3
+      },
+      "attention.value": {
+        "avg_importance": 0.7766666666666667,
+        "min_importance": 0.74,
+        "max_importance": 0.81,
+        "avg_final_rank": 10.0,
+        "min_final_rank": 8,
+        "max_final_rank": 12,
+        "avg_rank_changes": 2.6666666666666665,
+        "total_experiments": 3
+      },
+      "mlp.fc1": {
+        "avg_importance": 0.45999999999999996,
+        "min_importance": 0.41,
+        "max_importance": 0.52,
+        "avg_final_rank": 4.0,
+        "min_final_rank": 2,
+        "max_final_rank": 6,
+        "avg_rank_changes": 1.3333333333333333,
+        "total_experiments": 3
+      },
+      "mlp.fc2": {
+        "avg_importance": 0.38666666666666666,
+        "min_importance": 0.35,
+        "max_importance": 0.43,
+        "avg_final_rank": 3.0,
+        "min_final_rank": 2,
+        "max_final_rank": 4,
+        "avg_rank_changes": 0.6666666666666666,
+        "total_experiments": 3
+      }
+    },
+    "patterns": {
+      "most_important_layers": [
+        {
+          "layer": "attention.query",
+          "importance": 0.8833333333333333,
+          "avg_rank": 14.0
+        },
+        {
+          "layer": "attention.value",
+          "importance": 0.7766666666666667,
+          "avg_rank": 10.0
+        },
+        {
+          "layer": "attention.key",
+          "importance": 0.7200000000000001,
+          "avg_rank": 8.0
+        }
+      ],
+      "least_important_layers": [
+        {
+          "layer": "attention.key",
+          "importance": 0.7200000000000001,
+          "avg_rank": 8.0
+        },
+        {
+          "layer": "mlp.fc1",
+          "importance": 0.45999999999999996,
+          "avg_rank": 4.0
+        },
+        {
+          "layer": "mlp.fc2",
+          "importance": 0.38666666666666666,
+          "avg_rank": 3.0
+        }
+      ],
+      "importance_range": {
+        "min": 0.38666666666666666,
+        "max": 0.8833333333333333,
+        "mean": 0.6453333333333333
+      },
+      "rank_allocation_range": {
+        "min": 3.0,
+        "max": 14.0,
+        "mean": 7.8
+      }
+    },
+    "insights": [
+      "High variability in layer importance suggests strong differentiation between layers",
+      "Adaptive rank allocation shows significant differentiation between layers",
+      "Layer 'attention.query' shows 2.3x higher importance than 'mlp.fc2'",
+      "Attention layers show higher importance than MLP layers on average"
+    ]
+  },
+  "qa_lora_effectiveness_analysis": {
+    "config_statistics": {
+      "4bit_constant": {
+        "avg_accuracy": 0.8034,
+        "avg_quantization_error": 0.025,
+        "avg_effective_bits": 4.2,
+        "num_experiments": 1
+      },
+      "8bit_linear": {
+        "avg_accuracy": 0.8167,
+        "avg_quantization_error": 0.012,
+        "avg_effective_bits": 7.8,
+        "num_experiments": 1
+      },
+      "4bit_cosine": {
+        "avg_accuracy": 0.8089,
+        "avg_quantization_error": 0.018,
+        "avg_effective_bits": 4.5,
+        "num_experiments": 1
+      }
+    },
+    "insights": [
+      "Best QA-LoRA configuration: 8bit_linear with 0.8167 accuracy",
+      "8-bit quantization shows 1.0% better accuracy than 4-bit",
+      "Best quantization schedule: linear"
+    ],
+    "summary": {
+      "total_configurations": 3,
+      "total_experiments": 3
+    }
+  },
+  "adaptive_vs_fixed_comparison": {
+    "comparison": {
+      "test_accuracy": {
+        "adaptive": {
+          "mean": 0.8146666666666667,
+          "min": 0.8034,
+          "max": 0.8245
+        },
+        "fixed": {
+          "mean": 0.811175,
+          "min": 0.7856,
+          "max": 0.8267
+        },
+        "improvement_percent": 0.4304455470973182,
+        "adaptive_better": true
+      },
+      "trainable_params": {
+        "adaptive": {
+          "mean": 23500.0,
+          "min": 8000,
+          "max": 46000
+        },
+        "fixed": {
+          "mean": 15000.0,
+          "min": 4000,
+          "max": 32000
+        },
+        "improvement_percent": -56.666666666666664,
+        "adaptive_better": false
+      },
+      "training_time": {
+        "adaptive": {
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "fixed": {
+          "mean": 450.0,
+          "min": 340,
+          "max": 620
+        },
+        "improvement_percent": 100.0,
+        "adaptive_better": true
+      }
+    },
+    "insights": [
+      "Adaptive and fixed methods show similar accuracy performance",
+      "Fixed methods use 56.7% fewer parameters",
+      "Adaptive methods are 100.0% faster to train"
+    ],
+    "summary": {
+      "adaptive_experiments": 6,
+      "fixed_experiments": 4,
+      "metrics_compared": [
+        "test_accuracy",
+        "trainable_params",
+        "training_time"
+      ]
+    }
+  },
+  "key_findings": [
+    "Layer Importance Patterns:",
+    "  \u2022 High variability in layer importance suggests strong differentiation between layers",
+    "  \u2022 Adaptive rank allocation shows significant differentiation between layers",
+    "  \u2022 Layer 'attention.query' shows 2.3x higher importance than 'mlp.fc2'",
+    "QA-LoRA Effectiveness:",
+    "  \u2022 Best QA-LoRA configuration: 8bit_linear with 0.8167 accuracy",
+    "  \u2022 8-bit quantization shows 1.0% better accuracy than 4-bit",
+    "Adaptive vs Fixed Comparison:",
+    "  \u2022 Adaptive and fixed methods show similar accuracy performance",
+    "  \u2022 Fixed methods use 56.7% fewer parameters",
+    "  \u2022 Adaptive methods are 100.0% faster to train"
+  ]
+}

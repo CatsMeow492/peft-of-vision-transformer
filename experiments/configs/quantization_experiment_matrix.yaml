@@ -1,0 +1,143 @@
+# Quantization experiment matrix configuration for Task 8.2
+name: "quantization_experiment_matrix"
+description: "Comprehensive quantization experiments for PEFT Vision Transformers"
+tags: ["quantization", "lora", "8bit", "4bit", "task_8_2"]
+
+# Base configuration
+base_config:
+  model:
+    name: "deit_tiny_patch16_224"
+    source: "timm"
+    pretrained: true
+    image_size: 224
+
+  dataset:
+    name: "cifar10"
+    image_size: 224
+    batch_size: 32
+    num_workers: 4
+
+  lora:
+    rank: 8
+    alpha: 16.0
+    dropout: 0.1
+
+  training:
+    learning_rate: 1e-4
+    num_epochs: 15
+    optimizer: "adamw"
+    use_mixed_precision: true
+    save_steps: 500
+    eval_steps: 100
+    logging_steps: 25
+    early_stopping_patience: 5
+
+  seed: 42
+  max_memory_gb: 24.0
+
+# Experiment variations
+variations:
+  models:
+    - "deit_tiny_patch16_224"
+    - "deit_small_patch16_224"
+
+  datasets:
+    - "cifar10"
+    - "cifar100"
+
+  lora_ranks:
+    - rank: 4
+      alpha: 8.0
+    - rank: 8
+      alpha: 16.0
+    - rank: 16
+      alpha: 32.0
+
+  quantization_configs:
+    - null  # No quantization (baseline)
+    - bits: 8
+      compute_dtype: "float16"
+      quant_type: "nf4"
+      double_quant: false
+    - bits: 4
+      compute_dtype: "float16"
+      quant_type: "nf4"
+      double_quant: false
+    - bits: 4
+      compute_dtype: "float16"
+      quant_type: "nf4"
+      double_quant: true
+
+  seeds:
+    - 42
+    - 123
+    - 456
+
+# Expected experiment count: 2 models × 2 datasets × 3 LoRA configs × 4 quantization configs × 3 seeds = 144 experiments
+
+# Analysis focus areas
+analysis_focus:
+  memory_reduction:
+    - "Measure actual memory usage before and after quantization"
+    - "Compare 8-bit vs 4-bit memory efficiency"
+    - "Analyze memory reduction across different model sizes"
+
+  accuracy_impact:
+    - "Quantify accuracy degradation with quantization"
+    - "Compare accuracy-memory tradeoffs"
+    - "Analyze impact on different datasets"
+
+  gradient_flow:
+    - "Monitor gradient norms during training"
+    - "Detect gradient explosion/vanishing"
+    - "Analyze training stability with quantization"
+
+  convergence_behavior:
+    - "Compare convergence speed with/without quantization"
+    - "Analyze early stopping patterns"
+    - "Study training curve characteristics"
+
+  literature_comparison:
+    - "Compare with QLoRA results from NLP domain"
+    - "Benchmark against vision PEFT literature"
+    - "Validate implementation correctness"
+
+# Hardware optimization for M2 MacBook
+hardware_optimization:
+  memory_management:
+    - "Sequential experiment execution"
+    - "Adaptive batch sizing based on quantization"
+    - "Memory monitoring and cleanup"
+
+  compute_optimization:
+    - "Mixed precision training"
+    - "Efficient attention implementations"
+    - "Quantization-aware optimizations"
+
+# Expected outcomes
+expected_outcomes:
+  quantization_effectiveness:
+    8bit:
+      memory_reduction: "40-60%"
+      accuracy_drop: "<2%"
+      training_stability: "high"
+    4bit:
+      memory_reduction: "60-80%"
+      accuracy_drop: "2-5%"
+      training_stability: "moderate"
+
+  model_specific_findings:
+    deit_tiny:
+      baseline_memory: "~500MB"
+      quantization_benefit: "moderate"
+    deit_small:
+      baseline_memory: "~2GB"
+      quantization_benefit: "high"
+
+  dataset_specific_findings:
+    cifar10:
+      quantization_tolerance: "high"
+      expected_accuracy: ">85%"
+    cifar100:
+      quantization_tolerance: "moderate"
+      expected_accuracy: ">60%"

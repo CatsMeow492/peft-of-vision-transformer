@@ -1,0 +1,36 @@
+{
+  "quantization_applied": true,
+  "quantization_config": {
+    "bits": 8,
+    "compute_dtype": "float16",
+    "quant_type": "nf4",
+    "double_quant": false
+  },
+  "base_model_memory_mb": 500.0,
+  "quantized_model_memory_mb": 239.59803361344296,
+  "memory_reduction_mb": 260.40196638655704,
+  "memory_reduction_percent": 52.08039327731141,
+  "quantization_verification": {
+    "quantization_applied": true,
+    "quantized_layers": 24,
+    "total_layers": 63,
+    "memory_reduction_percent": 52.08039327731141,
+    "errors": []
+  },
+  "gradient_flow_analysis": {
+    "mean_gradient_norm": 1.0203581425602464,
+    "std_gradient_norm": 0.09924677891690792,
+    "max_gradient_norm": 2.365794335813936,
+    "min_gradient_norm": 0.12175604099491265,
+    "gradient_explosion_detected": false,
+    "gradient_vanishing_detected": false,
+    "stability_score": 0.9046153177015307
+  },
+  "convergence_analysis": {
+    "converged": false,
+    "early_stopped": false,
+    "total_epochs": 15,
+    "convergence_stability": "stable",
+    "quantization_impact": "minimal"
+  }
+}

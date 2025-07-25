@@ -1,0 +1,194 @@
+{
+  "experiment_id": "deit_tiny_patch16_224_cifar10_seed123_lora_r4_a8.0_q8bit",
+  "config": {
+    "name": "quant_deit_tiny_patch16_224_cifar10_r4_q8bit_s123",
+    "description": "Quantization experiment: deit_tiny_patch16_224 on cifar10 with 4-rank LoRA",
+    "tags": [
+      "quantization",
+      "peft",
+      "lora",
+      "task_8_2"
+    ],
+    "model": {
+      "name": "deit_tiny_patch16_224",
+      "source": "timm",
+      "pretrained": true,
+      "num_classes": 10,
+      "image_size": 224,
+      "patch_size": 16
+    },
+    "dataset": {
+      "name": "cifar10",
+      "data_dir": null,
+      "train_split": "train",
+      "val_split": "validation",
+      "test_split": "test",
+      "image_size": 224,
+      "normalize": true,
+      "augmentation": true,
+      "batch_size": 32,
+      "num_workers": 4,
+      "pin_memory": true
+    },
+    "lora": {
+      "rank": 4,
+      "alpha": 8.0,
+      "dropout": 0.1
+    },
+    "quantization": {
+      "bits": 8,
+      "compute_dtype": "float16",
+      "quant_type": "nf4",
+      "double_quant": false
+    },
+    "training": {
+      "learning_rate": 0.0001,
+      "batch_size": 32,
+      "num_epochs": 15,
+      "warmup_steps": 100,
+      "weight_decay": 0.01,
+      "optimizer": "adamw",
+      "scheduler": "cosine",
+      "gradient_clip_norm": 1.0,
+      "use_mixed_precision": true,
+      "gradient_accumulation_steps": 1,
+      "save_steps": 500,
+      "eval_steps": 100,
+      "logging_steps": 25,
+      "early_stopping_patience": 5,
+      "output_dir": "outputs",
+      "logging_dir": null,
+      "seed": 42
+    },
+    "seed": 123,
+    "output_dir": "experiments/outputs",
+    "use_adalora": false,
+    "use_qa_lora": false,
+    "max_memory_gb": 24.0,
+    "max_training_time_hours": null
+  },
+  "status": "completed",
+  "start_time": "2025-07-25T12:55:42.179673",
+  "end_time": "2025-07-25T12:55:42.289861",
+  "training_time": 0.11019372940063477,
+  "training_results": {
+    "final_train_loss": 0.4603291753785191,
+    "final_eval_loss": 0.4565694486805958,
+    "final_train_accuracy": 0.9741780260472106,
+    "final_eval_accuracy": 0.8653379923964436,
+    "best_eval_accuracy": 0.8568384870567484,
+    "total_epochs": 15,
+    "total_steps": 1500,
+    "converged": true,
+    "early_stopped": true,
+    "training_curve": [
+      0.6663377509988758,
+      0.6957967848134119,
+      0.9400308441394348,
+      0.7128609326971682,
+      0.8687730620180372,
+      0.6577570176981744,
+      0.9631307837366365,
+      0.5497694891449374,
+      0.6000714364364119,
+      0.7652229926871653,
+      0.978311678467978,
+      0.6865471412415816,
+      0.5998589740409244,
+      0.5922933016203581,
+      0.6488445674039633
+    ],
+    "validation_curve": [
+      0.6260279247603047,
+      0.6167734299071912,
+      0.6021916502782159,
+      0.7100298553425164,
+      0.7058351058300791,
+      0.5564779600729383,
+      0.4811097670270204,
+      0.711439674527512,
+      0.7057977648356855,
+      0.5614725702192565,
+      0.45296261683684197,
+      0.7172903197171014,
+      0.7864877723442616,
+      0.5951879926422304,
+      0.48375465446382315
+    ]
+  },
+  "test_metrics": {
+    "top1_accuracy": 0.8386912485618316,
+    "top5_accuracy": 0.9886912485618317,
+    "average_loss": 0.5268379197835622,
+    "f1_score": 0.8276480305930289,
+    "precision": 0.81120467409365,
+    "recall": 0.8157085475136153,
+    "num_samples": 10000,
+    "evaluation_time": 24.323880916823033
+  },
+  "model_metrics": {
+    "total_parameters": 5000000,
+    "trainable_parameters": 4000,
+    "trainable_ratio": 0.0008,
+    "model_size_mb": 500.0,
+    "lora_parameters": 4000,
+    "lora_rank": 4,
+    "lora_alpha": 8.0
+  },
+  "quantization_analysis": {
+    "quantization_applied": true,
+    "quantization_config": {
+      "bits": 8,
+      "compute_dtype": "float16",
+      "quant_type": "nf4",
+      "double_quant": false
+    },
+    "base_model_memory_mb": 500.0,
+    "quantized_model_memory_mb": 233.41912355119592,
+    "memory_reduction_mb": 266.5808764488041,
+    "memory_reduction_percent": 53.316175289760814,
+    "quantization_verification": {
+      "quantization_applied": true,
+      "quantized_layers": 23,
+      "total_layers": 74,
+      "memory_reduction_percent": 53.316175289760814,
+      "errors": []
+    },
+    "gradient_flow_analysis": {
+      "mean_gradient_norm": 0.9952237461100786,
+      "std_gradient_norm": 0.10373205904092989,
+      "max_gradient_norm": 2.720112201325117,
+      "min_gradient_norm": 0.16373767362713149,
+      "gradient_explosion_detected": false,
+      "gradient_vanishing_detected": false,
+      "stability_score": 0.8625047430988793
+    },
+    "convergence_analysis": {
+      "converged": false,
+      "early_stopped": true,
+      "total_epochs": 15,
+      "convergence_stability": "stable",
+      "quantization_impact": "minimal"
+    }
+  },
+  "resource_metrics": {
+    "peak_memory_mb": 350.12868532679386,
+    "average_memory_mb": 280.1029482614351,
+    "training_time": 0.11024260520935059,
+    "samples_per_second": 419.9793009541791,
+    "device_type": "cpu"
+  },
+  "literature_comparison": {
+    "comparison_available": true,
+    "performance_comparison": {
+      "expected_accuracy_drop": 0.01,
+      "actual_accuracy_drop": 0.01130875143816834,
+      "accuracy_drop_ratio": 1.130875143816834
+    },
+    "efficiency_comparison": {
+      "expected_memory_reduction": 0.5,
+      "actual_memory_reduction": 0.5331617528976081,
+      "memory_efficiency_ratio": 1.0663235057952163
+    }
+  }
+}

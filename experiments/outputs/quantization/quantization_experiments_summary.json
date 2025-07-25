@@ -1,0 +1,40 @@
+{
+  "task": "8.2 Conduct quantization experiments and analysis",
+  "timestamp": "2025-07-25T12:55:42.403511",
+  "total_experiments": 6,
+  "successful_experiments": 6,
+  "failed_experiments": [],
+  "success_rate": 1.0,
+  "quantization_breakdown": {
+    "no_quantization": 3,
+    "8bit_quantization": 3,
+    "4bit_quantization": 0,
+    "4bit_double_quantization": 0
+  },
+  "memory_analysis": {
+    "average_memory_reduction_8bit": 52.71296339175412,
+    "average_memory_reduction_4bit": 0.0,
+    "max_memory_reduction": 53.316175289760814,
+    "memory_reduction_std": 0.5049328168034528
+  },
+  "accuracy_analysis": {
+    "baseline_accuracy": 0.8466596839186362,
+    "8bit_accuracy_drop": 0.00820919888471483,
+    "4bit_accuracy_drop": 0.0,
+    "accuracy_vs_memory_tradeoff": []
+  },
+  "convergence_analysis": {
+    "stable_convergence_rate": 1.0,
+    "quantization_impact_on_convergence": {
+      "none": 3,
+      "minimal": 3,
+      "slower_convergence": 0,
+      "destabilizing": 0
+    },
+    "gradient_flow_stability": {}
+  },
+  "literature_comparison": {
+    "qlora_comparison": {},
+    "vision_peft_comparison": {}
+  }
+}
