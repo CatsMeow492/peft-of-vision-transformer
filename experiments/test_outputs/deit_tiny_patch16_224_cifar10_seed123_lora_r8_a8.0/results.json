@@ -1,0 +1,12 @@
+{
+  "experiment_id": "deit_tiny_patch16_224_cifar10_seed123_lora_r8_a8.0",
+  "status": "completed",
+  "metrics": {
+    "final_accuracy": 0.982,
+    "final_loss": 0.40900000000000003,
+    "training_time_seconds": 171
+  },
+  "start_time": "2025-07-24T12:22:25.427036",
+  "end_time": "2025-07-24T12:22:25.427059",
+  "peak_memory_gb": 2.91
+}

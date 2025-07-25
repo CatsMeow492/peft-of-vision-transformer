@@ -1,0 +1,73 @@
+{
+  "name": "small_test_matrix",
+  "description": "Small test matrix for validation",
+  "tags": [
+    "test",
+    "validation"
+  ],
+  "model": {
+    "name": "deit_tiny_patch16_224",
+    "source": "timm",
+    "pretrained": true,
+    "num_classes": 10,
+    "image_size": 224,
+    "patch_size": 16
+  },
+  "dataset": {
+    "name": "cifar10",
+    "data_dir": null,
+    "train_split": "train",
+    "val_split": "validation",
+    "test_split": "test",
+    "image_size": 224,
+    "normalize": true,
+    "augmentation": true,
+    "batch_size": 16,
+    "num_workers": 4,
+    "pin_memory": true
+  },
+  "lora": {
+    "rank": 8,
+    "alpha": 8.0,
+    "dropout": 0.1,
+    "target_modules": [
+      "qkv",
+      "query",
+      "key",
+      "value",
+      "proj",
+      "fc1",
+      "fc2"
+    ],
+    "bias": "none",
+    "task_type": "FEATURE_EXTRACTION",
+    "inference_mode": false,
+    "modules_to_save": null
+  },
+  "quantization": null,
+  "training": {
+    "learning_rate": 0.0001,
+    "batch_size": 16,
+    "num_epochs": 2,
+    "warmup_steps": 100,
+    "weight_decay": 0.01,
+    "optimizer": "adamw",
+    "scheduler": "cosine",
+    "gradient_clip_norm": 1.0,
+    "use_mixed_precision": true,
+    "gradient_accumulation_steps": 1,
+    "save_steps": 100,
+    "eval_steps": 50,
+    "logging_steps": 50,
+    "early_stopping_patience": null,
+    "output_dir": "outputs",
+    "logging_dir": "outputs/logs",
+    "seed": 42
+  },
+  "seed": 123,
+  "output_dir": "experiments/outputs",
+  "use_adalora": false,
+  "use_qa_lora": false,
+  "max_memory_gb": null,
+  "max_training_time_hours": null
+}

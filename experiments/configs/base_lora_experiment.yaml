@@ -1,0 +1,54 @@
+# Base LoRA experiment configuration
+name: "base_lora_cifar10"
+description: "Baseline LoRA experiment on CIFAR-10 with DeiT-tiny"
+tags: ["baseline", "lora", "cifar10"]
+
+model:
+  name: "deit_tiny_patch16_224"
+  source: "timm"
+  pretrained: true
+  image_size: 224
+  patch_size: 16
+
+dataset:
+  name: "cifar10"
+  image_size: 224
+  normalize: true
+  augmentation: true
+  batch_size: 32
+  num_workers: 4
+  pin_memory: true
+
+lora:
+  rank: 8
+  alpha: 16.0
+  dropout: 0.1
+  bias: "none"
+  task_type: "FEATURE_EXTRACTION"
+
+training:
+  learning_rate: 1e-4
+  batch_size: 32
+  num_epochs: 10
+  warmup_steps: 100
+  weight_decay: 0.01
+  optimizer: "adamw"
+  scheduler: "cosine"
+  gradient_clip_norm: 1.0
+  use_mixed_precision: true
+  gradient_accumulation_steps: 1
+  save_steps: 500
+  eval_steps: 100
+  logging_steps: 50
+  early_stopping_patience: 5
+
+seed: 42
+output_dir: "experiments/outputs/base_lora_cifar10"
+
+# PEFT method flags
+use_adalora: false
+use_qa_lora: false
+
+# Resource constraints for M2 MacBook
+max_memory_gb: 32.0
+max_training_time_hours: 2.0

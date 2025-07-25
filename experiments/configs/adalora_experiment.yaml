@@ -1,0 +1,34 @@
+# AdaLoRA experiment configuration
+name: "adalora_cifar100"
+description: "Adaptive LoRA experiment on CIFAR-100 with importance-based rank allocation"
+tags: ["adalora", "adaptive", "cifar100"]
+
+model:
+  name: "deit_small_patch16_224"
+  source: "timm"
+  pretrained: true
+
+dataset:
+  name: "cifar100"
+  batch_size: 24  # Smaller batch for larger model
+  num_workers: 4
+
+lora:
+  rank: 16  # Higher initial rank for AdaLoRA
+  alpha: 32.0
+  dropout: 0.1
+
+training:
+  learning_rate: 5e-5  # Lower LR for larger model
+  num_epochs: 15
+  gradient_accumulation_steps: 2  # Effective batch size = 48
+  save_steps: 1000
+  eval_steps: 200
+
+seed: 42
+output_dir: "experiments/outputs/adalora_cifar100"
+
+use_adalora: true
+use_qa_lora: false
+
+max_memory_gb: 48.0  # Larger model needs more memory

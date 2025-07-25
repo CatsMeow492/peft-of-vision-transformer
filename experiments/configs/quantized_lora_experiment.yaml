@@ -1,0 +1,43 @@
+# Quantized LoRA experiment configuration
+name: "quantized_lora_cifar10"
+description: "8-bit quantized LoRA experiment on CIFAR-10"
+tags: ["quantization", "lora", "8bit", "cifar10"]
+
+model:
+  name: "deit_tiny_patch16_224"
+  source: "timm"
+  pretrained: true
+  image_size: 224
+
+dataset:
+  name: "cifar10"
+  image_size: 224
+  batch_size: 32
+  num_workers: 4
+
+lora:
+  rank: 8
+  alpha: 16.0
+  dropout: 0.1
+
+quantization:
+  bits: 8
+  compute_dtype: "float16"
+  quant_type: "nf4"
+  double_quant: false
+
+training:
+  learning_rate: 1e-4
+  num_epochs: 10
+  optimizer: "adamw"
+  use_mixed_precision: true
+  save_steps: 500
+  eval_steps: 100
+
+seed: 42
+output_dir: "experiments/outputs/quantized_lora_cifar10"
+
+use_adalora: false
+use_qa_lora: false
+
+max_memory_gb: 16.0  # Should use less memory with quantization

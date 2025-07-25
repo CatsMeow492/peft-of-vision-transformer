@@ -2,12 +2,15 @@
 Training pipeline components for PEFT methods.
 """
 
-from .peft_trainer import PEFTTrainer
-from .adalora_controller import AdaLoRAController
-from .training_config import TrainingConfig
+from .peft_trainer import PEFTTrainer, TrainingConfig, TrainingMetrics, TrainingResults
+from .dataset_loader import DatasetManager, TinyImageNetDataset, create_memory_efficient_dataloader
 
 __all__ = [
     "PEFTTrainer",
-    "AdaLoRAController", 
-    "TrainingConfig"
+    "TrainingConfig",
+    "TrainingMetrics", 
+    "TrainingResults",
+    "DatasetManager",
+    "TinyImageNetDataset",
+    "create_memory_efficient_dataloader"
 ]
